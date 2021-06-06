@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-	"project/data"
-	"project/routes"
+
+	"github.com/jesperkha/survey-app/data"
+	"github.com/jesperkha/survey-app/routes"
 )
 
 const Port string = ":3000"

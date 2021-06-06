@@ -1,4 +1,4 @@
-module project
+module "github.com/jesperkha/survey-app"
 
 go 1.16
 

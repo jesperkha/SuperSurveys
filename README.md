@@ -20,7 +20,7 @@ You can:
 
 <br>
 
-Go module install:
+Go module installs:
 
 ```c
 go get go.mongodb.org/mongo-driver/mongo

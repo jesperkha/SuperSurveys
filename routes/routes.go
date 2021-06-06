@@ -3,8 +3,9 @@ package routes
 import (
 	"log"
 	"net/http"
-	"project/data"
 	"text/template"
+
+	"github.com/jesperkha/survey-app/data"
 )
 
 // Handles main page (index.html)
