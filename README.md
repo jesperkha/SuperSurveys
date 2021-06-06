@@ -10,15 +10,10 @@ You can:
 
 <br>
 
-## Languages and Frameworks
-
-Backend:
+## Stack
 
 - Go
 - [MongoDB](https://www.mongodb.com/)
-
-Frontend:
-
 - TypeScript / JavaScript
 - [jQuery](https://jquery.com/)
 - [chart.js](https://www.chartjs.org/)
@@ -27,10 +22,6 @@ Frontend:
 
 Go modules:
 
-```js
-go get go.mongodb.org/mongo-driver/mongo
-```
+> `go get go.mongodb.org/mongo-driver/mongo`
 
-```js
-go get github.com/joho/godotenv
-```
+> `go get github.com/joho/godotenv`
