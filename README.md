@@ -20,8 +20,12 @@ You can:
 
 <br>
 
-Go modules:
+Go module install:
 
-> `go get go.mongodb.org/mongo-driver/mongo`
+```c
+go get go.mongodb.org/mongo-driver/mongo
+```
 
-> `go get github.com/joho/godotenv`
+```c
+go get github.com/joho/godotenv
+```
