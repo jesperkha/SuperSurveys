@@ -7,6 +7,14 @@
 		<title>Document</title>
 	</head>
 	<body>
-		<h1>helo</h1>
+		<h1>Enter survey code:</h1>
+		<input type="text" id="input" />
+		<script>
+			function next() {
+				const inp = document.getElementById("input").value;
+				window.location = "/survey?id=" + inp;
+			}
+		</script>
+		<button onclick="next()">go to survey</button>
 	</body>
 </html>

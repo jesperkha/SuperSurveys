@@ -1,0 +1,40 @@
+<h1>{{ .Name }}</h1>
+<p>{{ .Desc }}</p>
+<br />
+
+<div>
+	{{ range $index, $elem := .Questions }}
+
+	{{ if eq $elem.Optional true }}<p style="color: red;"><i>*Required</i></p>{{ end }}
+
+	{{ if eq $elem.Class "single" }}
+	<h3>{{ .Prompt }}</h3>
+	<div>
+		{{ range $elem.Options }}
+		<input type="radio" name="qstn{{ $index }}">{{ . }}</input><br>
+		{{ end }}
+	</div>
+	{{ end }}
+
+
+	{{ if eq $elem.Class "multiple" }}
+	<h3>{{ .Prompt }}</h3>
+	<div>
+		{{ range $elem.Options }}
+		<input type="checkbox" name="qstn{{ $index }}">{{ . }}</input><br>
+		{{ end }}
+	</div>
+	{{ end }}
+
+
+	{{ if eq $elem.Class "text" }}
+	<h3>{{ .Prompt }}</h3>
+	<div>
+		<input type="text" name="qstn{{ $index }}">
+	</div>
+	{{ end }}
+
+	<br>
+
+	{{ end }}
+</div>

@@ -1,17 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"project/data"
+	"project/routes"
 )
 
-
+const Port string = ":3000"
 
 func main() {
-	fs := http.FileServer(http.Dir("./Client"))
 
-	err := http.ListenAndServe(":3000", fs)
-	if err != nil {
-		fmt.Printf("Listen err: %s", err)
-	}
+	data.ConnectClient()
+	defer data.CloseClient()
+
+	// HTTP Server
+
+	http.HandleFunc("/", routes.Index)
+	http.HandleFunc("/survey", routes.FetchSurvey)
+
+	err := http.ListenAndServe(Port, nil)
+	if err != nil { log.Fatal(err) }
 }
