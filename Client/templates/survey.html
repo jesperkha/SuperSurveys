@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ .Name }}</title>
+		<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script defer src="/js/survey.js"></script>
+	</head>
+	<body>
+		<form id="survey-form">
+			<h1>{{ .Name }}</h1>
+			<p>{{ .Desc }}</p>
+			<br />
+
+			{{ range $index, $elem := .Questions }} {{ if eq $elem.Optional true }}
+			<p style="color: red"><i>*Required</i></p>
+			{{ end }}
+
+			<h3>{{ .Prompt }}</h3>
+
+			{{ if eq $elem.Class "single" }} {{ range $elem.Options }}
+			<input type="radio" name="qstn{{ $index }}" value="{{ . }}" data-type="{{ $elem.Class }}" />
+			<label for="qstn{{ $index }}">{{ . }}</label>
+			<br />
+			{{ end }} {{ end }} {{ if eq $elem.Class "multiple" }} {{ range $elem.Options }}
+			<input type="checkbox" name="qstn{{ $index }}" value="{{ . }}" data-type="{{ $elem.Class }}" />
+			<label for="qstn{{ $index }}">{{ . }}</label>
+			<br />
+			{{ end }} {{ end }} {{ if eq $elem.Class "text" }}
+			<input type="text" name="qstn{{ $index }}" data-type="{{ $elem.Class }}" />
+			<br />
+			{{ end }}{{ end }}
+
+			<br />
+
+			<input type="submit" value="Submit Survey" />
+		</form>
+	</body>
+</html>
