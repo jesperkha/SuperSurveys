@@ -6,20 +6,26 @@ import (
 
 	"github.com/jesperkha/survey-app/data"
 	"github.com/jesperkha/survey-app/routes"
+	"github.com/joho/godotenv"
 )
 
-const Port string = ":3000"
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	data.ConnectClient()
+	// Mongo client connect
+	err = data.ConnectClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print("MongoDB client connected")
 	defer data.CloseClient()
-
-	// HTTP Server
-
-	http.HandleFunc("/", routes.Index)
-	http.HandleFunc("/survey", routes.FetchSurvey)
-
-	err := http.ListenAndServe(Port, nil)
-	if err != nil { log.Fatal(err) }
+	
+	routes.Handlers()
+	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./Client/js/"))))
+	log.Print("Listening on port :3000")
+	http.ListenAndServe(":3000", nil)
 }
