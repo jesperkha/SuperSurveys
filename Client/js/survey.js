@@ -1,12 +1,6 @@
 // Submit survey
 
-$(document).ready(() => {
-	console.log("Ready");
-});
-
 $("#survey-form").on("submit", event => {
-	console.log("Form submitted");
-
 	event.preventDefault();
 	const questions = [];
 
@@ -37,8 +31,6 @@ function getInputValues(name) {
 }
 
 async function sendSurvey(questions) {
-	console.log("New request");
-
 	const data = JSON.stringify(questions);
 	const options = {
 		method: "POST",
@@ -49,17 +41,12 @@ async function sendSurvey(questions) {
 	};
 
 	const urlParams = new URLSearchParams(window.location.search);
-	const surveyID = urlParams.get("id"); // Change
+	const surveyID = urlParams.get("id");
 
 	const res = await fetch(`/submitSurveyData?id=${surveyID}`, options);
 	if (res.ok) {
-		console.log("Request success");
-		showResultScreen();
+		window.location = "/success";
 	} else {
 		window.location = `/error/${res.status}`;
 	}
-}
-
-function showResultScreen() {
-	// Show success message
 }

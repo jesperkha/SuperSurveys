@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/securecookie"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -17,7 +18,7 @@ import (
 
 type Survey struct {
 	SurveyId     string
-	Creator      string
+	CreatorId    string
 	Name         string
 	Desc         string
 	NumQuestions int
@@ -52,7 +53,7 @@ func GetSurveysById(id string) (result []Survey, err error) {
 	defer cancel()
 
 	collection := getCollection("surveys")
-	cursor, err := collection.Find(ctx, bson.M{ "surveyId": id }) // UUID
+	cursor, err := collection.Find(ctx, bson.M{ "creatorId": id }) // UUID
 	if err != nil {
 		return nil, err
 	}
@@ -97,17 +98,41 @@ type User struct {
 	Password  string
 	Email     string
 	Timestamp string
+	Settings  Settings
+}
+
+type Settings struct {
+	Theme string
+}
+
+var encrypter = securecookie.New(securecookie.GenerateRandomKey(64), securecookie.GenerateRandomKey(32))
+
+
+func (user *User) EncodePassword() (err error) {
+	encoded, err := encrypter.Encode("password", user.Password)
+	if err != nil {
+		return err
+	}
+
+	user.Password = encoded
+	return nil
 }
 
 
-func (usr *User) Verify() bool {
-	_, err := GetUser(usr.Username, usr.Password)
-	return err == nil
+func (user *User) DecodePassword() (err error) {
+	var decoded string
+	err = encrypter.Decode("password", user.Password, &decoded)
+	if err != nil {
+		return err
+	}
+
+	user.Password = decoded
+	return nil
 }
 
 
-func (usr *User) GetSurveys(surveyId string) (surveys []Survey, err error) {
-	surveys, err = GetSurveysById(usr.UserId)
+func (user *User) GetSurveys() (surveys []Survey, err error) {
+	surveys, err = GetSurveysById(user.UserId)
 	if err != nil {
 		return surveys, err
 	}
@@ -125,6 +150,11 @@ func InsertUser(username string, password string, email string) (user User, err 
 		Timestamp: time.Now().String(),
 	}
 
+	err = user.EncodePassword()
+	if err != nil {
+		return user, err
+	}
+
 	ctx, cancel := getContext()
 	defer cancel()
 
@@ -138,9 +168,7 @@ func InsertUser(username string, password string, email string) (user User, err 
 }
 
 
-func GetUser(username string, password string) (user User, err error) {
-	filter := bson.M{ "username": username, "password": password }
-
+func getUserByFilter(filter bson.M) (user User, err error) {
 	ctx, cancel := getContext()
 	defer cancel()
 
@@ -157,6 +185,17 @@ func GetUser(username string, password string) (user User, err error) {
 		return user, err
 	}
 
+	user.DecodePassword()
 	return user, nil
+}
+
+
+func GetUser(username string, password string) (user User, err error) {
+	return getUserByFilter(bson.M{ "username": username, "password": password })
+}
+
+
+func GetUserById(id string) (user User, err error) {
+	return getUserByFilter(bson.M{ "userId": id })
 }
 

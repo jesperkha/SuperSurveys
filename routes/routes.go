@@ -11,22 +11,38 @@ import (
 	"github.com/jesperkha/survey-app/data"
 )
 
-func Handlers() {
-	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		http.ServeFile(res, req, "./Client/index.html")
-	})
-
-	http.HandleFunc("/survey", FetchSurvey)
-	http.HandleFunc("/submitSurveyData", SubmitSurveyData)
-	http.HandleFunc("/error/", HandleError)
+// Proto
+func debug(str string) {
+	log.Print(str)
 }
 
 
-func FetchSurvey(res http.ResponseWriter, req *http.Request) {
+func SurveyHandler(res http.ResponseWriter, req *http.Request) {
+	if req.URL.Path != "/survey" {
+		http.Redirect(res, req, "/error/404", http.StatusNotFound)
+		return
+	}
+
+	if req.Method == "GET" {
+		SurveyGET(res, req)
+		return
+	}
+
+	if req.Method == "POST" {
+		SurveyPOST(res, req)
+		return
+	}
+
+	http.Error(res, "Bad Request", http.StatusBadRequest)
+}
+
+
+func SurveyGET(res http.ResponseWriter, req *http.Request) {
 	surveyID := req.FormValue("id")
 	result, err := data.GetSurveysById(surveyID)
 	if err != nil {
-		HandleErrorCode(res, req, 500)
+		http.Redirect(res, req, "/error/500", http.StatusInternalServerError)
+		return
 	}
 
 	numSurveys := len(result)
@@ -37,36 +53,41 @@ func FetchSurvey(res http.ResponseWriter, req *http.Request) {
 	}
 	
 	if numSurveys == 0 {
-		// Html file missing or not in database
-		HandleErrorCode(res, req, 404)
+		http.Redirect(res, req, "/error/404", http.StatusNotFound)
 	}
-} 
+}
 
 
-func SubmitSurveyData(res http.ResponseWriter, req *http.Request) {
+func SurveyPOST(res http.ResponseWriter, req *http.Request) {
 	response, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		res.WriteHeader(400)
+		res.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	answers := string(response)
 	surveyId := req.URL.Query().Get("id")
 
-	num, err := data.InsertSubmission(surveyId, answers)
-	if err != nil || num == 0 {
-		res.WriteHeader(500)
+	if num, err := data.InsertSubmission(surveyId, answers); err != nil || num == 0 {
+		res.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
+	res.WriteHeader(http.StatusOK)
 	debug(fmt.Sprintf("Survey data submitted: %s",  string(response)))
 }
 
+
+type RequestError struct {
+	Type string
+	Msg  string
+}
 
 func HandleError(res http.ResponseWriter, req *http.Request) {
 	errorType := strings.ReplaceAll(req.URL.Path, "/error/", "")
 
 	reqErr := RequestError{
 		Type: errorType,
-		Msg: ErrorMessages[errorType],
 	}
 
 	tmp, err := template.ParseFiles("./Client/templates/error.html")
@@ -78,10 +99,4 @@ func HandleError(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-
-func HandleErrorCode(res http.ResponseWriter, req *http.Request, code int) {
-	http.Redirect(res, req, fmt.Sprintf("/error/%d", code), code)
-	debug(fmt.Sprintf("Redirected with error code %d", code))
 }
