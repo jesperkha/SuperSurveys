@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,11 +12,6 @@ import (
 	"github.com/jesperkha/survey-app/data"
 )
 
-// Proto
-func debug(str string) {
-	log.Print(str)
-}
-
 
 func SurveyHandler(res http.ResponseWriter, req *http.Request) {
 	if req.URL.Path != "/survey" {
@@ -24,57 +20,61 @@ func SurveyHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if req.Method == "GET" {
-		SurveyGET(res, req)
-		return
+		if errorCode, err := SurveyGET(res, req); errorCode != 0 {
+			http.Redirect(res, req, fmt.Sprintf("/error/%d", errorCode), errorCode)
+			log.Print(err) // Debug
+		}
 	}
 
 	if req.Method == "POST" {
-		SurveyPOST(res, req)
-		return
+		if errorCode, err := SurveyPOST(res, req); errorCode != 0 {
+			res.WriteHeader(errorCode)
+			log.Print(err) // Debug
+		}
 	}
-
-	http.Error(res, "Bad Request", http.StatusBadRequest)
 }
 
 
-func SurveyGET(res http.ResponseWriter, req *http.Request) {
+func SurveyGET(res http.ResponseWriter, req *http.Request) (errorCode int, err error) {
 	surveyID := req.FormValue("id")
 	result, err := data.GetSurveysById(surveyID)
 	if err != nil {
-		http.Redirect(res, req, "/error/500", http.StatusInternalServerError)
-		return
+		return 500, err
 	}
 
-	numSurveys := len(result)
-
-	if numSurveys == 1 {
+	if len(result) >= 1 {
 		template, _ := template.ParseFiles("./Client/templates/survey.html")
 		template.Execute(res, result[0])
+		return 0, nil
 	}
-	
-	if numSurveys == 0 {
-		http.Redirect(res, req, "/error/404", http.StatusNotFound)
-	}
+
+	return 404, err
 }
 
 
-func SurveyPOST(res http.ResponseWriter, req *http.Request) {
+type SurveyResponse struct {
+	Data [][]string
+	Id 	 string
+}
+
+func SurveyPOST(res http.ResponseWriter, req *http.Request) (errorCode int, err error) {
 	response, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		return
+		return 500, err
 	}
 
-	answers := string(response)
-	surveyId := req.URL.Query().Get("id")
+	var submission SurveyResponse
+	if err = json.Unmarshal(response, &submission); err != nil {
+		return 500, err
+	}
 
-	if num, err := data.InsertSubmission(surveyId, answers); err != nil || num == 0 {
-		res.WriteHeader(http.StatusInternalServerError)
-		return
+	if num, err := data.InsertSubmission(submission.Id, submission.Data); err != nil || num == 0 {
+		return 500, err
 	}
 
 	res.WriteHeader(http.StatusOK)
-	debug(fmt.Sprintf("Survey data submitted: %s",  string(response)))
+	log.Print(submission) // Debug
+	return 0, nil
 }
 
 

@@ -53,7 +53,7 @@ func GetSurveysById(id string) (result []Survey, err error) {
 	defer cancel()
 
 	collection := getCollection("surveys")
-	cursor, err := collection.Find(ctx, bson.M{ "creatorId": id }) // UUID
+	cursor, err := collection.Find(ctx, bson.M{ "surveyId": id }) // UUID
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func GetSurveysById(id string) (result []Survey, err error) {
 }
 
 
-func InsertSubmission(surveyId string, answers string) (numModified int64, err error) {
+func InsertSubmission(surveyId string, answers [][]string) (numModified int64, err error) {
 	ctx, cancel := getContext()
 	defer cancel()
 
@@ -105,29 +105,27 @@ type Settings struct {
 	Theme string
 }
 
-var encrypter = securecookie.New(securecookie.GenerateRandomKey(64), securecookie.GenerateRandomKey(32))
+var KEY64 string = "9ckXVq5lewP2ICRBzNaIeDwrXcWSWzMPCI1GlDxaMBVnaXq4T9Sgu6sf5CD1tdXo"
+var KEY32 string = "Kk26D48IQrjxo1SfKmNXMNFECCwCAStu"
+var encrypter = securecookie.New([]byte(KEY64), []byte(KEY32))
 
-
-func (user *User) EncodePassword() (err error) {
-	encoded, err := encrypter.Encode("password", user.Password)
+func EncodePassword(password string) (encoded string, err error) {
+	encoded, err = encrypter.Encode("password", password)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	user.Password = encoded
-	return nil
+	return encoded, nil
 }
 
 
-func (user *User) DecodePassword() (err error) {
-	var decoded string
-	err = encrypter.Decode("password", user.Password, &decoded)
+func DecodePassword(password string) (decoded string, err error) {
+	err = encrypter.Decode("password", password, &decoded)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	user.Password = decoded
-	return nil
+	return decoded, nil
 }
 
 
@@ -142,17 +140,17 @@ func (user *User) GetSurveys() (surveys []Survey, err error) {
 
 
 func InsertUser(username string, password string, email string) (user User, err error) {
+	encoded, err := EncodePassword(user.Password)
+	if err != nil {
+		return user, err
+	}
+
 	user = User{
 		UserId:    uuid.NewString(),
 		Username:  username,
-		Password:  password,
+		Password:  encoded,
 		Email:     email,
 		Timestamp: time.Now().String(),
-	}
-
-	err = user.EncodePassword()
-	if err != nil {
-		return user, err
 	}
 
 	ctx, cancel := getContext()
@@ -185,7 +183,6 @@ func getUserByFilter(filter bson.M) (user User, err error) {
 		return user, err
 	}
 
-	user.DecodePassword()
 	return user, nil
 }
 

@@ -9,19 +9,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-/*
-	Todo
-
-	routes/login.go
-		Make secure https connection (SSL?)
-		Make logout and cookie remover
-		Add user info in response on Authorize() that isnt private info (pass, mail etc)
-		Better login redirect and err handler
-
-	routes/routes.go
-		On /survey POST version should have id and content as body not url query
-*/
-
 
 func main() {
 	// Load env vars

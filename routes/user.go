@@ -36,6 +36,7 @@ func UserHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	log.Print("Not authorized user.go")
 	http.Redirect(res, req, "/login", http.StatusUnauthorized)
 }
 

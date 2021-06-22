@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/jesperkha/survey-app/data"
@@ -10,7 +11,9 @@ import (
 )
 
 
-var cookieHandler = securecookie.New(securecookie.GenerateRandomKey(64), securecookie.GenerateRandomKey(32))
+var KEY64 string = "9ckXVq5lewP2ICRBzNaIeDwrXcWSWzMPCI1GlDxaMBVnaXq4T9Sgu6sf5CD1tdXo"
+var KEY32 string = "Kk26D48IQrjxo1SfKmNXMNFECCwCAStu"
+var cookieHandler = securecookie.New([]byte(KEY64), []byte(KEY32))
 var cookieName = "token"
 var cookieValue = "userId"
 
@@ -23,6 +26,9 @@ func setCookie(res http.ResponseWriter, id string) {
 		}
 	
 		http.SetCookie(res, cookie)
+	} else {
+		// Proto
+		log.Print("Error encoding login.go")
 	}
 }
 
@@ -67,6 +73,8 @@ func getUserId(req *http.Request) (id string) {
 		if err = cookieHandler.Decode(cookieValue, cookie.Value, &decoded); err == nil {
 			id = decoded
 		}
+	} else {
+		log.Print("Error decoding login.go")
 	}
 
 	return id

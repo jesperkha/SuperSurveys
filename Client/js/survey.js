@@ -31,22 +31,26 @@ function getInputValues(name) {
 }
 
 async function sendSurvey(questions) {
-	const data = JSON.stringify(questions);
+	const urlParams = new URLSearchParams(window.location.search);
+	const surveyId = urlParams.get("id");
+
 	const options = {
 		method: "POST",
 		headers: {
-			"Content-Type": "text",
+			"Content-Type": "application/json",
 		},
-		body: data,
+		body: JSON.stringify({
+			Data: questions,
+			Id: surveyId,
+		}),
 	};
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const surveyID = urlParams.get("id");
-
-	const res = await fetch(`/submitSurveyData?id=${surveyID}`, options);
-	if (res.ok) {
-		window.location = "/success";
-	} else {
-		window.location = `/error/${res.status}`;
+	try {
+		const res = await fetch(`/survey`, options);
+		if (res.ok) console.log("Success");
+		else window.location = `/error/${res.status}`;
+	} catch (err) {
+		console.error(err);
+		window.location = `/error/500`;
 	}
 }
