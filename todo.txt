@@ -1,0 +1,4 @@
+Make .env for 32 and 64 byte key string for securecookies
+Create more test functions
+Logout handler
+Remove all jQuery stuff. replace with js

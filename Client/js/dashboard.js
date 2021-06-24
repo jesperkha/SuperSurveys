@@ -1,9 +1,10 @@
-const cookies = {};
+const jar = {};
 
 // Get cookies
-$(document).ready(() => {
-	const split = document.cookie.split("=");
-	for (let i = 0; i < split.length; i += 2) {
-		cookies[split[i]] = split[i + 1];
+window.onload = () => {
+	const cookies = document.cookie.split("; ");
+	for (let cookie of cookies) {
+		const [key, value] = cookie.split("=");
+		jar[key] = value
 	}
-});
+}

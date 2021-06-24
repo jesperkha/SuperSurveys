@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"strings"
@@ -13,6 +14,7 @@ type UserHandlerFunc func(res http.ResponseWriter, req *http.Request, user data.
 
 var userHandlers = map[string]UserHandlerFunc{
 	"dashboard": HandleUserDashboard,
+	"get": ServeUserProfile,
 }
 
 
@@ -51,4 +53,20 @@ func HandleUserDashboard(res http.ResponseWriter, req *http.Request, user data.U
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+
+func ServeUserProfile(res http.ResponseWriter, req *http.Request, user data.User) {
+	if req.Method != "GET" {
+		res.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	userJson, err := json.Marshal(user)
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	res.Write([]byte(userJson))
 }

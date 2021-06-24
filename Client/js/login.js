@@ -1,4 +1,4 @@
-$("#login-form").on("submit", event => {
+document.querySelector("#login-form").addEventListener("submit", event => {
 	event.preventDefault();
 
 	const options = {
@@ -7,5 +7,8 @@ $("#login-form").on("submit", event => {
 			"Content-Type": "form-data",
 		},
 	};
+
 	const res = await fetch("/login", options);
-});
+	const user = await res.json();
+	console.log(user)
+})
