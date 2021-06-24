@@ -31,7 +31,7 @@ func TestGetSurvey(t *testing.T) {
 }
 
 func TestInsertSubmission(t *testing.T) {
-	_, err := data.InsertSubmission(testSurveyId, "TEST_SUBMISSION")
+	_, err := data.InsertSubmission(testSurveyId, [][]string{{"TEST_SUBMISSION"}})
 	if err != nil {
 		t.Error(err)
 	}
