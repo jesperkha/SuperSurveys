@@ -1,4 +1,4 @@
-# Survey Fleet
+# Super Surveys
 
 _Project status: Literally just started_
 
@@ -6,7 +6,7 @@ _Project status: Literally just started_
 
 ## About The Project
 
-Survey Fleet is a simple web-app designed to easily create and send out online surveys. The intent is to make data collection for school-, buisiness-, and personal projects easier and more effective. Survey Fleet allows you to quickly make a multiquestion survey and visualize result data in an appropriate way.
+Super Surveys is a simple web-app designed to easily create and send out online surveys. The intent is to make data collection for school-, buisiness-, and personal projects easier and more effective. It allows you to quickly make a multiquestion survey and visualize result data in an appropriate way.
 
 <br>
 
