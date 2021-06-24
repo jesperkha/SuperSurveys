@@ -1,0 +1,10 @@
+name: Testing
+on: push
+
+jobs:
+  Project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Go Tests
+        run: go test ./test

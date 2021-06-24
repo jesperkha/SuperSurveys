@@ -16,7 +16,6 @@ func TestClientConnect(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 	err = data.ConnectClient()
 	if err != nil {
 		t.Error(err)
@@ -24,23 +23,32 @@ func TestClientConnect(t *testing.T) {
 }
 
 func TestGetSurvey(t *testing.T) {
-	_, err := data.GetSurveysById(testSurveyId)
+	result, err := data.GetSurveysById(testSurveyId)
 	if err != nil {
 		t.Error(err)
+	}
+	if len(result) != 1 {
+		t.Error("Too many documents fetched")
 	}
 }
 
 func TestInsertSubmission(t *testing.T) {
-	_, err := data.InsertSubmission(testSurveyId, [][]string{{"TEST_SUBMISSION"}})
+	num, err := data.InsertSubmission(testSurveyId, [][]string{{"TEST_SUBMISSION"}})
 	if err != nil {
 		t.Error(err)
+	}
+	if num != 1 {
+		t.Error("Multiple documents modified")
 	}
 }
 
 func TestGetUser(t *testing.T) {
-	_, err := data.GetUser("TestUser", "1234")
+	user, err := data.GetUser("TestUser", "1234")
 	if err != nil {
 		t.Error(err)
+	}
+	if user.Username != "TestUser" {
+		t.Error("Wrong user fetched")
 	}
 }
 
