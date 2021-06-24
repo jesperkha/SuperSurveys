@@ -1,31 +1,40 @@
-## About The Project
+# Survey Fleet
 
-[app name] is a simple web-app designed to easily create and send out online serveys. The intent is to make something useful and easily accessible.
-
-You can:
-
-- Create your own surveys with ease
-- Partake in answering other surveys
-- Visualize result data for your surveys
+_Project status: Literally just started_
 
 <br>
 
-## Stack
+## About The Project
+
+Survey Fleet is a simple web-app designed to easily create and send out online surveys. The intent is to make data collection for school-, buisiness-, and personal projects easier and more effective. Survey Fleet allows you to quickly make a multiquestion survey and visualize result data in an appropriate way.
+
+<br>
+
+## Languages and technologies used:
 
 - Go
 - [MongoDB](https://www.mongodb.com/)
-- TypeScript / JavaScript
+- JavaScript
 - [jQuery](https://jquery.com/)
 - [chart.js](https://www.chartjs.org/)
 
 <br>
 
-Go module installs:
+## Contribution
 
-```c
-go get go.mongodb.org/mongo-driver/mongo
-```
+Any and all contributions are welcome! Follow the steps below to get the project set up on your pc:
 
-```c
-go get github.com/joho/godotenv
-```
+<br>
+
+- Have Go installed on your device (https://golang.org/dl/)
+- Install the following Go modules:
+  - github.com/google/uuid
+  - github.com/gorilla/securecookie
+  - github.com/joho/godotenv
+  - go.mongodb.org/mongo-driver
+- Set up an new MongoDB database with a `users` and `surveys` collection
+- Fill out the `.env_template` file with the correct keys and rename it to `.env`
+
+<br>
+
+Everything should be up and running once you have completed the steps above. Make sure you follow the guidelines in `code_formatting.md`.
