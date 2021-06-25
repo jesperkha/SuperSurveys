@@ -33,7 +33,7 @@ func main() {
 	http.HandleFunc("/survey", routes.SurveyHandler)
 	http.HandleFunc("/error/", routes.HandleError)
 	http.HandleFunc("/login", routes.LoginHandler)
-	http.HandleFunc("/users/", routes.UserHandler)
+	http.HandleFunc("/users/", routes.UsersRouteHandler)
 	
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./Client/js/"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./Client/css/"))))

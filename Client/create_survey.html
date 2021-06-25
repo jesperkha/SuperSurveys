@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="/js/create-survey.js"></script>
+		<title>Create</title>
+
+		<!-- Proto -->
+		<style>
+			.question {
+				margin-bottom: 10vh;
+			}
+			.input-box {
+				margin-top: 30vh;
+				padding: 1vh;
+				background-color: lightblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="questions"></div>
+		<div class="input-box">
+			<p>Question:</p>
+			<input id="prompt" type="text" />
+			<p>Type</p>
+			<select name="" id="type-select">
+				<option value="radio">Single Choice</option>
+				<option value="checkbox">Mutliple Choice</option>
+				<option value="text">Text Answer</option>
+			</select>
+			<button onclick="createQuestion();">Add question</button>
+		</div>
+		<button style="padding: 10px; cursor: pointer; margin: 20px" onclick="publishCreatedSurvey();">Publish</button>
+	</body>
+</html>

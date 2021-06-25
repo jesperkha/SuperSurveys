@@ -1,4 +1,38 @@
-Make .env for 32 and 64 byte key string for securecookies
-Create more test functions
-Logout handler
-Remove all jQuery stuff. replace with js
+Todo
+make .env for 32 and 64 byte key string for securecookies
+remove all jQuery stuff. replace with js
+fix getSurvey function to recieve [][]string not string
+add "required" toggle for creating questions
+make page for creating new surveys (before editor) and add title + desc in request
+user dashboard page with links
+clean up Client directory
+
+
+------------------------ By date: ------------------------
+
+25.06.21 ✔️
+Create new survey feature for users
+
+26.06.21
+Create user account (with email verification)
+
+27.06.21 -> 28.06.21
+home page
+debugging
+writing tests
+refactoring
+logout if not done
+
+29.06.21
+request buffer and spam protection
+
+30.06.21
+user security
+database security
+
+01.07.21 -> 03.07.21
+refactoring
+writing tests
+
+04.07.21 +
+css and frontend js
