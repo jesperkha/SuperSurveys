@@ -20,7 +20,7 @@
 ### Packages
 
 - Package names should be self-descriptive and one word.
-- All packages must contain a main file with the same name as the package.
+- All packages must contain a main file with the same name as the package. The main file should declare all global variables and types. All other files should just contain functions.
 
 <br>
 

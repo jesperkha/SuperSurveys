@@ -72,7 +72,7 @@ func InsertSubmission(surveyId string, answers [][]string) (numModified int64, e
 	ctx, cancel := getContext()
 	defer cancel()
 
-	update := bson.D{primitive.E{Key: "$push", Value: bson.D{primitive.E{Key: "answers", Value: answers}}}}
+	update := bson.D{primitive.E{Key: "$push", Value: bson.A{primitive.E{Key: "answers", Value: answers}}}}
 	id := bson.M{"surveyId": surveyId}
 
 	collection := getCollection("surveys")

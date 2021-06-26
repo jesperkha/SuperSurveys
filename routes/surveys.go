@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,25 +11,24 @@ import (
 )
 
 
-func SurveyHandler(res http.ResponseWriter, req *http.Request) {
+func SurveyHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
 	if req.URL.Path != "/survey" {
-		http.Redirect(res, req, "/error/404", http.StatusNotFound)
-		return
+		return 404
 	}
 
 	if req.Method == "GET" {
-		if errorCode, err := SurveyGET(res, req); errorCode != 0 {
-			http.Redirect(res, req, fmt.Sprintf("/error/%d", errorCode), errorCode)
-			log.Print(err) // Debug
-		}
+		errorCode, err := SurveyGET(res, req)
+		log.Print(err) // Debug
+		return errorCode
 	}
 
 	if req.Method == "POST" {
-		if errorCode, err := SurveyPOST(res, req); errorCode != 0 {
-			res.WriteHeader(errorCode)
-			log.Print(err) // Debug
-		}
+		errorCode, err := SurveyPOST(res, req)
+		log.Print(err) // Debug
+		return errorCode
 	}
+
+	return 400
 }
 
 
@@ -50,11 +48,6 @@ func SurveyGET(res http.ResponseWriter, req *http.Request) (errorCode int, err e
 	return 404, err
 }
 
-
-type SurveyResponse struct {
-	Data [][]string
-	Id   string
-}
 
 func SurveyPOST(res http.ResponseWriter, req *http.Request) (errorCode int, err error) {
 	response, err := ioutil.ReadAll(req.Body)

@@ -11,39 +11,26 @@ import (
 	"github.com/jesperkha/survey-app/data"
 )
 
-type UserHandlerFunc func(res http.ResponseWriter, req *http.Request, user data.User) (errorCode int)
 
-var userHandlers = map[string]UserHandlerFunc{
-	"dashboard": PageUserDashboard,
-	"create": CreateSurveyHandler,
-	"get": ServeUserProfile,
-}
-
-
-func UsersRouteHandler(res http.ResponseWriter, req *http.Request) {
+func UsersHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
 	path := strings.Split(req.URL.Path, "/")
 	if len(path) != 3 || path[1] != "users" {
-		http.Redirect(res, req, "/error/404", http.StatusNotFound)
-		return
+		return 404
 	}
 
 	route := path[2]
 
 	if user, auth := Authorize(req); auth {
 		if f, ok := userHandlers[route]; ok {
-			errorCode := f(res, req, user)
-			if errorCode != 0 {
-				res.WriteHeader(errorCode)
-			}
+			return f(res, req, user)
 		} else {
-			http.Redirect(res, req, "/error/404", http.StatusNotFound)
+			return 404
 		}
-
-		return
 	}
 
-	log.Print("Not authorized user.go") // Debug
+	log.Print("Not authorized") // Debug
 	http.Redirect(res, req, "/login", http.StatusUnauthorized)
+	return 0
 }
 
 
@@ -77,7 +64,7 @@ func ServeUserProfile(res http.ResponseWriter, req *http.Request, user data.User
 }
 
 
-func CreateSurveyHandler(res http.ResponseWriter, req *http.Request, user data.User) (errorCode int) {
+func PageCreateSurvey(res http.ResponseWriter, req *http.Request, user data.User) (errorCode int) {
 	if req.Method == "GET" {
 		http.ServeFile(res, req, "./Client/create_survey.html")
 		return 0

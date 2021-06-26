@@ -26,15 +26,9 @@ func main() {
 	defer data.CloseClient()
 
 	// Route handlers
-	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		http.ServeFile(res, req, "./Client/index.html")
-	})
-
-	http.HandleFunc("/survey", routes.SurveyHandler)
+	http.HandleFunc("/", routes.RouteHandler)
 	http.HandleFunc("/error/", routes.HandleError)
-	http.HandleFunc("/login", routes.LoginHandler)
-	http.HandleFunc("/users/", routes.UsersRouteHandler)
-	
+
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./Client/js/"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./Client/css/"))))
 	

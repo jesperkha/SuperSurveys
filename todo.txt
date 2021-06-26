@@ -6,7 +6,7 @@ add "required" toggle for creating questions
 make page for creating new surveys (before editor) and add title + desc in request
 user dashboard page with links
 clean up Client directory
-
+fix db get requests since new type of question answers is different and doesnt work
 
 ------------------------ By date: ------------------------
 
@@ -14,7 +14,7 @@ clean up Client directory
 Create new survey feature for users
 
 26.06.21
-Create user account (with email verification)
+Create central handler for all endpoints
 
 27.06.21 -> 28.06.21
 home page
@@ -24,13 +24,14 @@ refactoring
 logout if not done
 
 29.06.21
-request buffer and spam protection
+Create user account (with email verification)
 
-30.06.21
+30.06.21 -> 02.06.21
+request buffer and spam protection
 user security
 database security
 
-01.07.21 -> 03.07.21
+03.07.21
 refactoring
 writing tests
 
