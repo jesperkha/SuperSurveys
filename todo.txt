@@ -13,7 +13,7 @@ fix db get requests since new type of question answers is different and doesnt w
 25.06.21 ✔️
 Create new survey feature for users
 
-26.06.21
+26.06.21 ✔️
 Create central handler for all endpoints
 
 27.06.21 -> 28.06.21

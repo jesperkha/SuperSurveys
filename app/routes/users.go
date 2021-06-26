@@ -8,7 +8,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/jesperkha/survey-app/data"
+	"github.com/jesperkha/SuperSurveys/app/data"
 )
 
 

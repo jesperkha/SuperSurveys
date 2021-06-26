@@ -8,7 +8,7 @@ import (
 	"text/template"
 
 	"github.com/gorilla/securecookie"
-	"github.com/jesperkha/survey-app/data"
+	"github.com/jesperkha/SuperSurveys/app/data"
 )
 
 // Secure cookies for auth

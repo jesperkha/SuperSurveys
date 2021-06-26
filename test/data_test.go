@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/jesperkha/survey-app/data"
+	"github.com/jesperkha/SuperSurveys/app/data"
 	"github.com/joho/godotenv"
 )
 

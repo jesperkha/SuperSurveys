@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/jesperkha/survey-app/data"
+	"github.com/jesperkha/SuperSurveys/app/data"
 )
 
 

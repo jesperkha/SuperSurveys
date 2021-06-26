@@ -1,4 +1,4 @@
-module github.com/jesperkha/survey-app
+module github.com/jesperkha/SuperSurveys
 
 go 1.16
 

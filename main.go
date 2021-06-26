@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jesperkha/survey-app/data"
-	"github.com/jesperkha/survey-app/routes"
+	"github.com/jesperkha/SuperSurveys/app/data"
+	"github.com/jesperkha/SuperSurveys/app/routes"
 	"github.com/joho/godotenv"
 )
 
