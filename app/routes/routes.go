@@ -13,9 +13,7 @@ import (
 
 // Secure cookies for auth
 
-var KEY64 string = "9ckXVq5lewP2ICRBzNaIeDwrXcWSWzMPCI1GlDxaMBVnaXq4T9Sgu6sf5CD1tdXo"
-var KEY32 string = "Kk26D48IQrjxo1SfKmNXMNFECCwCAStu"
-var cookieHandler = securecookie.New([]byte(KEY64), []byte(KEY32))
+var CookieHandler *securecookie.SecureCookie
 
 
 // Error type for error page handler
@@ -38,7 +36,7 @@ type SurveyResponse struct {
 
 type HandlerFunc func(res http.ResponseWriter, req *http.Request) (errorCode int)
 
-var RouteHandlers = map[string]HandlerFunc {
+var routeHandlers = map[string]HandlerFunc {
 	"login": LoginHandler,
 	"survey": SurveyHandler,
 	"users": UsersHandler,
@@ -58,13 +56,13 @@ var userHandlers = map[string]UserHandlerFunc {
 
 func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	if req.URL.Path == "/" {
-		http.ServeFile(res, req, "./Client/index.html")
+		http.ServeFile(res, req, "./client/index.html")
 		return
 	}
 	
 	split := strings.Split(req.URL.Path, "/")
 	route := split[1]
-	if handler, ok := RouteHandlers[route]; ok {
+	if handler, ok := routeHandlers[route]; ok {
 		if errorCode := handler(res, req); errorCode != 0 {
 			http.Redirect(res, req, fmt.Sprintf("/error/%d", errorCode), http.StatusMovedPermanently)
 		}
@@ -78,7 +76,7 @@ func HandleError(res http.ResponseWriter, req *http.Request) {
 	errorType := strings.ReplaceAll(req.URL.Path, "/error/", "")
 	reqErr := RequestError{ Type: errorType }
 
-	tmp, err := template.ParseFiles("./Client/templates/error.html")
+	tmp, err := template.ParseFiles("./client/templates/error.html")
 	if err != nil {
 		log.Print(err)
 	}

@@ -35,7 +35,7 @@ func UsersHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
 
 
 func PageUserDashboard(res http.ResponseWriter, req *http.Request, user data.User) (errorCode int) {
-	template, err := template.ParseFiles("./Client/templates/dashboard.html")
+	template, err := template.ParseFiles("./client/templates/dashboard.html")
 	if err != nil {
 		return 500
 	}
@@ -66,7 +66,7 @@ func ServeUserProfile(res http.ResponseWriter, req *http.Request, user data.User
 
 func PageCreateSurvey(res http.ResponseWriter, req *http.Request, user data.User) (errorCode int) {
 	if req.Method == "GET" {
-		http.ServeFile(res, req, "./Client/create_survey.html")
+		http.ServeFile(res, req, "./client/create_survey.html")
 		return 0
 	}
 

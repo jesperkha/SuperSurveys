@@ -15,12 +15,11 @@ Super Surveys is a simple web-app designed to easily create and send out online 
 - Go
 - [MongoDB](https://www.mongodb.com/)
 - JavaScript
-- [jQuery](https://jquery.com/)
 - [chart.js](https://www.chartjs.org/)
 
 <br>
 
-## Contribution
+<!-- ## Contribution
 
 Any and all contributions are welcome! Follow the steps below to get the project set up on your pc:
 
@@ -37,4 +36,4 @@ Any and all contributions are welcome! Follow the steps below to get the project
 
 <br>
 
-Everything should be up and running once you have completed the steps above. Make sure you follow the guidelines in `code_formatting.md`.
+Everything should be up and running once you have completed the steps above. Make sure you follow the guidelines in `code_formatting.md`. -->

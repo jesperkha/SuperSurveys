@@ -17,6 +17,44 @@ var (
 )
 
 
+// Survey strcture for database
+
+type Survey struct {
+	SurveyId     string
+	CreatorId    string
+	Name         string
+	Desc         string
+	NumQuestions int
+	Questions    []Question
+	Answers      []Answer
+}
+
+type Question struct {
+	Class    string
+	Optional bool
+	Prompt   string
+	Options  []string
+}
+
+type Answer [][]string
+
+
+// User structure for database
+
+type User struct {
+	UserId    string
+	Username  string
+	Password  string
+	Email     string
+	Timestamp string
+	Settings  Settings
+}
+
+type Settings struct {
+	Theme string
+}
+
+
 func getContext() (context.Context, context.CancelFunc) {
 	return context.WithTimeout(context.Background(), time.Duration(Timeout) * time.Second)
 }

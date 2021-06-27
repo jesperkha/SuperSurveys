@@ -1,12 +1,9 @@
 Todo
-make .env for 32 and 64 byte key string for securecookies
-remove all jQuery stuff. replace with js
-fix getSurvey function to recieve [][]string not string
 add "required" toggle for creating questions
 make page for creating new surveys (before editor) and add title + desc in request
-user dashboard page with links
 clean up Client directory
-fix db get requests since new type of question answers is different and doesnt work
+fix db get requests since new type of question answers is different and doesnt work *
+
 
 ------------------------ By date: ------------------------
 

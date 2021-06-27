@@ -6,16 +6,12 @@ import (
 	"log"
 	"net/http"
 	"text/template"
-	
+
 	"github.com/jesperkha/SuperSurveys/app/data"
 )
 
 
 func SurveyHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
-	if req.URL.Path != "/survey" {
-		return 404
-	}
-
 	if req.Method == "GET" {
 		errorCode, err := SurveyGET(res, req)
 		log.Print(err) // Debug
@@ -40,7 +36,7 @@ func SurveyGET(res http.ResponseWriter, req *http.Request) (errorCode int, err e
 	}
 
 	if len(result) >= 1 {
-		template, _ := template.ParseFiles("./Client/templates/survey.html")
+		template, _ := template.ParseFiles("./client/templates/survey.html")
 		template.Execute(res, result[0])
 		return 0, nil
 	}

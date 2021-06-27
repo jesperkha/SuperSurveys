@@ -8,7 +8,7 @@ import (
 
 
 func setEncodedCookie(res http.ResponseWriter, name string, key string, value interface{}) {
-	if encoded, err := cookieHandler.Encode(key, value); err == nil {
+	if encoded, err := CookieHandler.Encode(key, value); err == nil {
 		cookie := &http.Cookie{
 			Name: name,
 			Value: encoded,
@@ -25,7 +25,7 @@ func getUserIdFromCookie(req *http.Request) (id string) {
 	id = ""
 
 	if cookie, err := req.Cookie("token"); err == nil {
-		if err = cookieHandler.Decode("userId", cookie.Value, &decoded); err == nil {
+		if err = CookieHandler.Decode("userId", cookie.Value, &decoded); err == nil {
 			id = decoded
 		}
 	}
@@ -49,7 +49,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
 	}
 
 	if req.Method == "GET" {
-		http.ServeFile(res, req, "./Client/auth/login.html")
+		http.ServeFile(res, req, "./client/auth/login.html")
 		return 0
 	}
 
