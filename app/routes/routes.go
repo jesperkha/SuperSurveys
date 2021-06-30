@@ -62,9 +62,10 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	
 	split := strings.Split(req.URL.Path, "/")
 	route := split[1]
+
 	if handler, ok := routeHandlers[route]; ok {
 		if errorCode := handler(res, req); errorCode != 0 {
-			http.Redirect(res, req, fmt.Sprintf("/error/%d", errorCode), http.StatusMovedPermanently)
+			http.Redirect(res, req, fmt.Sprintf("/error/%d", errorCode), errorCode)
 		}
 	} else {
 		http.Redirect(res, req, "/error/404", http.StatusNotFound)

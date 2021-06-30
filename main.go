@@ -33,7 +33,7 @@ func main() {
 	
 	// Route handlers
 	http.HandleFunc("/", routes.RouteHandler)
-	http.HandleFunc("/error/", routes.HandleError)
+	// http.HandleFunc("/error/", routes.HandleError)
 
 	var filePrefixes = map[string]string {
 		"/js/": "./client/js/",

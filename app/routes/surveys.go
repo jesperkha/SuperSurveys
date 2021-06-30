@@ -10,17 +10,26 @@ import (
 	"github.com/jesperkha/SuperSurveys/app/data"
 )
 
-
 func SurveyHandler(res http.ResponseWriter, req *http.Request) (errorCode int) {
+	if req.URL.Path != "/survey" {
+		return 404
+	}
+
 	if req.Method == "GET" {
 		errorCode, err := SurveyGET(res, req)
-		log.Print(err) // Debug
+		// Debug
+		if err != nil {
+			log.Print(err)
+		}
 		return errorCode
 	}
 
 	if req.Method == "POST" {
 		errorCode, err := SurveyPOST(res, req)
-		log.Print(err) // Debug
+		// Debug
+		if err != nil {
+			log.Print(err)
+		}
 		return errorCode
 	}
 
